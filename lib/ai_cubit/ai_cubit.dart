@@ -10,7 +10,13 @@ class AiCubit extends Cubit<String> {
 
   AiCubit() : super('');
 
-  void sendPrompt(String prompt) {
-    emit('some result');
+  void sendPrompt(String inputMessage) async {
+    // Provide a prompt that contains text
+    final prompt = [Content.text(inputMessage)];
+
+    // To generate text output, call generateContent with the text input
+    final response = await model.generateContent(prompt);
+
+    emit(response.text as String);
   }
 }
