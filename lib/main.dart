@@ -95,9 +95,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   if (_formKey.currentState!.validate()) {
                     // Use the value from the text field
                     print('Submitted: ' + _textController.text);
+
+                    context.read<AiCubit>().sendPrompt(_textController.text);
                   }
                 },
                 child: const Text('Submit'),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: BlocBuilder<AiCubit, String>(
+                    builder: (context, state) {
+                      return Text(state);
+                    },
+                  ),
+                ),
               ),
             ],
           ),
