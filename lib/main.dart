@@ -1,4 +1,5 @@
 import 'package:ai_color_palette/ai_cubit/ai_cubit.dart';
+import 'package:ai_color_palette/ai_cubit/ai_state.dart';
 import 'package:ai_color_palette/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -94,9 +95,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: BlocBuilder<AiCubit, String>(
+                    child: BlocBuilder<AiCubit, AiState>(
                       builder: (context, state) {
-                        return Text(state);
+                        if (state is AiLoaded) {
+                          return Text(state.message);
+                        } else if (state is AiLoading) {
+                          return CircularProgressIndicator();
+                        } else if (state is AiError) {
+                          return Text(state.errorMessage);
+                        } else {
+                          return SizedBox.shrink();
+                        }
                       },
                     ),
                   ),
