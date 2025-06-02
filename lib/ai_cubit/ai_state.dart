@@ -13,12 +13,13 @@ class AiLoading extends AiState {
 }
 
 class AiLoaded extends AiState {
-  AiLoaded({required this.message});
+  AiLoaded({required this.message, this.colors});
 
   final String message;
+  final List<int>? colors;
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, colors];
 }
 
 class AiError extends AiState {

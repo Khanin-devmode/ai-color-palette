@@ -95,18 +95,44 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: BlocBuilder<AiCubit, AiState>(
-                      builder: (context, state) {
-                        if (state is AiLoaded) {
-                          return Text(state.message);
-                        } else if (state is AiLoading) {
-                          return CircularProgressIndicator();
-                        } else if (state is AiError) {
-                          return Text(state.errorMessage);
-                        } else {
-                          return SizedBox.shrink();
-                        }
-                      },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          color: Color(0xFFDAA520),
+                        ),
+                        BlocBuilder<AiCubit, AiState>(
+                          builder: (context, state) {
+                            if (state is AiLoaded) {
+                              return Column(
+                                children: [
+                                  Text(state.message),
+
+                                  if (state.colors != null)
+                                    Row(
+                                      children: [
+                                        for (int color in state.colors!)
+                                          Expanded(
+                                            child: Container(
+                                              height: 50,
+                                              color: Color(color),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                ],
+                              );
+                            } else if (state is AiLoading) {
+                              return CircularProgressIndicator();
+                            } else if (state is AiError) {
+                              return Text(state.errorMessage);
+                            } else {
+                              return SizedBox.shrink();
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

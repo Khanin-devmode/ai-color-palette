@@ -18,7 +18,9 @@ class AiCubit extends Cubit<AiState> {
         final functionCall = response.functionCalls.first;
         switch (functionCall.name) {
           case 'generateColorPalette':
-            await setColorPaletteCall(functionCall);
+            final colors = await setColorPaletteCall(functionCall);
+            emit(AiLoaded(message: response.text ?? '', colors: colors));
+            break;
           default:
             throw UnimplementedError(
               'Function not declared to the model: ${functionCall.name}',
@@ -26,23 +28,30 @@ class AiCubit extends Cubit<AiState> {
         }
       }
 
-      emit(AiLoaded(message: response.text as String));
+      // emit(AiLoaded(message: response.text as String, colors: []));
     } catch (e) {
       emit(AiError(errorMessage: 'An error occurred: $e'));
     }
   }
 }
 
-Future<void> setColorPaletteCall(FunctionCall functionCall) async {
-  String color_0 = functionCall.args['color_0'] as String;
-  String color_1 = functionCall.args['color_1'] as String;
-  String color_2 = functionCall.args['color_2'] as String;
-  String color_3 = functionCall.args['color_3'] as String;
-  String color_4 = functionCall.args['color_4'] as String;
+// Function to parse color palette from function call
+Future<List<int>> setColorPaletteCall(FunctionCall functionCall) async {
+  print('Original color_0: ' + (functionCall.args['color_0'] as String));
+  print('Original color_1: ' + (functionCall.args['color_1'] as String));
+  print('Original color_2: ' + (functionCall.args['color_2'] as String));
+  print('Original color_3: ' + (functionCall.args['color_3'] as String));
+  print('Original color_4: ' + (functionCall.args['color_4'] as String));
+  int color_0 = int.parse((functionCall.args['color_0'] as String));
+  int color_1 = int.parse((functionCall.args['color_1'] as String));
+  int color_2 = int.parse((functionCall.args['color_2'] as String));
+  int color_3 = int.parse((functionCall.args['color_3'] as String));
+  int color_4 = int.parse((functionCall.args['color_4'] as String));
 
   print(color_0);
   print(color_1);
   print(color_2);
   print(color_3);
   print(color_4);
+  return [color_0, color_1, color_2, color_3, color_4];
 }
